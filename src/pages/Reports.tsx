@@ -6,45 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileDown, Filter, Search, Eye, Flag, AlertTriangle } from "lucide-react";
-
-const reportData = [
-  {
-    id: "REP-001",
-    title: "Monthly Issues Summary",
-    type: "Summary",
-    period: "June 2024",
-    status: "Ready",
-    generatedBy: "System",
-    date: "2024-06-30"
-  },
-  {
-    id: "REP-002", 
-    title: "Road Issues Analysis",
-    type: "Category",
-    period: "Q2 2024",
-    status: "Processing",
-    generatedBy: "Admin",
-    date: "2024-06-28"
-  },
-  {
-    id: "REP-003",
-    title: "Performance Metrics",
-    type: "Performance",
-    period: "June 2024",
-    status: "Ready",
-    generatedBy: "System",
-    date: "2024-06-29"
-  },
-  {
-    id: "REP-004",
-    title: "User Engagement Report",
-    type: "Analytics",
-    period: "May 2024",
-    status: "Ready",
-    generatedBy: "Manager",
-    date: "2024-05-31"
-  }
-];
+import React, { useEffect, useState } from "react";
 
 const flaggedReports = [
   {
@@ -74,6 +36,13 @@ const flaggedReports = [
 ];
 
 export default function Reports() {
+  const [reports, setReports] = useState<any[]>([]);
+  useEffect(() => {
+    fetch("http://localhost:8080/api/reports")
+      .then((res) => res.json())
+      .then((data) => setReports(data));
+  }, []);
+
   return (
     <Layout>
       <div className="space-y-6">
@@ -172,7 +141,7 @@ export default function Reports() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {reportData.map((report) => (
+                {reports.map((report) => (
                   <TableRow key={report.id}>
                     <TableCell className="font-mono">{report.id}</TableCell>
                     <TableCell>{report.title}</TableCell>

@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,64 +24,18 @@ interface Issue {
   priority: "Low" | "Medium" | "High" | "Urgent";
 }
 
-const mockIssues: Issue[] = [
-  {
-    id: "ISS-001",
-    title: "Pothole on Main Street",
-    category: "Roads",
-    status: "progress",
-    location: "Main St & 1st Ave",
-    reportedDate: "2024-01-15",
-    priority: "High",
-  },
-  {
-    id: "ISS-002", 
-    title: "Broken Street Light",
-    category: "Lighting",
-    status: "reported",
-    location: "Park Avenue",
-    reportedDate: "2024-01-14",
-    priority: "Medium",
-  },
-  {
-    id: "ISS-003",
-    title: "Water Leak in Residential Area",
-    category: "Water Supply",
-    status: "resolved",
-    location: "Oak Street",
-    reportedDate: "2024-01-10",
-    priority: "Urgent",
-  },
-  {
-    id: "ISS-004",
-    title: "Overflowing Garbage Bin",
-    category: "Cleanliness",
-    status: "progress",
-    location: "Central Park",
-    reportedDate: "2024-01-13",
-    priority: "Low",
-  },
-  {
-    id: "ISS-005",
-    title: "Fallen Tree Blocking Road",
-    category: "Obstructions",
-    status: "reported",
-    location: "Elm Street",
-    reportedDate: "2024-01-16",
-    priority: "Urgent",
-  },
-];
-
 const getStatusBadge = (status: IssueStatus) => {
   const variants = {
     reported: "status-reported",
-    progress: "status-progress", 
+    progress: "status-progress",
     resolved: "status-resolved",
   } as const;
-  
+
   return (
     <Badge variant={variants[status]}>
-      {status === "progress" ? "In Progress" : status.charAt(0).toUpperCase() + status.slice(1)}
+      {status === "progress"
+        ? "In Progress"
+        : status.charAt(0).toUpperCase() + status.slice(1)}
     </Badge>
   );
 };
@@ -92,7 +47,7 @@ const getPriorityBadge = (priority: string) => {
     High: "destructive",
     Urgent: "destructive",
   } as const;
-  
+
   return (
     <Badge variant={variants[priority as keyof typeof variants] || "secondary"}>
       {priority}
@@ -101,6 +56,12 @@ const getPriorityBadge = (priority: string) => {
 };
 
 export function IssuesTable() {
+  const [issues, setIssues] = useState<Issue[]>([]);
+  useEffect(() => {
+    fetch("http://localhost:8080/api/issues")
+      .then((res) => res.json())
+      .then((data) => setIssues(data));
+  }, []);
   return (
     <Card>
       <CardHeader>
@@ -126,7 +87,7 @@ export function IssuesTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mockIssues.map((issue) => (
+            {issues.map((issue) => (
               <TableRow key={issue.id}>
                 <TableCell className="font-medium">{issue.id}</TableCell>
                 <TableCell>{issue.title}</TableCell>

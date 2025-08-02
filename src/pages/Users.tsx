@@ -8,59 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Search, Filter, UserPlus, Shield, Ban, Eye, MoreHorizontal } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-
-const userData = [
-  {
-    id: "USR-001",
-    name: "John Smith",
-    email: "john.smith@email.com",
-    type: "Verified",
-    reports: 24,
-    status: "Active",
-    joinDate: "2024-01-15",
-    lastActive: "2024-06-30"
-  },
-  {
-    id: "USR-002",
-    name: "Anonymous User",
-    email: "N/A",
-    type: "Anonymous",
-    reports: 8,
-    status: "Active",
-    joinDate: "2024-06-20",
-    lastActive: "2024-06-29"
-  },
-  {
-    id: "USR-003",
-    name: "Sarah Johnson",
-    email: "sarah.j@email.com",
-    type: "Verified",
-    reports: 45,
-    status: "Active",
-    joinDate: "2023-11-08",
-    lastActive: "2024-06-30"
-  },
-  {
-    id: "USR-004",
-    name: "Mike Wilson",
-    email: "mike.w@email.com",
-    type: "Verified",
-    reports: 12,
-    status: "Suspended",
-    joinDate: "2024-03-22",
-    lastActive: "2024-06-25"
-  },
-  {
-    id: "USR-005",
-    name: "Anonymous User",
-    email: "N/A",
-    type: "Anonymous",
-    reports: 3,
-    status: "Active",
-    joinDate: "2024-06-28",
-    lastActive: "2024-06-28"
-  }
-];
+import React, { useEffect, useState } from "react";
 
 const adminUsers = [
   {
@@ -82,6 +30,13 @@ const adminUsers = [
 ];
 
 export default function Users() {
+  const [users, setUsers] = useState<any[]>([]);
+  useEffect(() => {
+    fetch("http://localhost:8080/api/users")
+      .then((res) => res.json())
+      .then((data) => setUsers(data));
+  }, []);
+
   return (
     <Layout>
       <div className="space-y-6">
@@ -247,7 +202,7 @@ export default function Users() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {userData.map((user) => (
+                {users.map((user) => (
                   <TableRow key={user.id}>
                     <TableCell>
                       <div className="flex items-center space-x-3">
