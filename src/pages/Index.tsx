@@ -1,13 +1,24 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Layout from "@/components/Layout";
+import { DashboardStats } from "@/components/DashboardStats";
+import { IssuesTable } from "@/components/IssuesTable";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <Layout>
+      <div className="p-6">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold tracking-tight">Dashboard Overview</h2>
+          <p className="text-muted-foreground">
+            Monitor and manage civic issues reported by citizens
+          </p>
+        </div>
+        
+        <div className="space-y-6">
+          <DashboardStats />
+          <IssuesTable />
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
